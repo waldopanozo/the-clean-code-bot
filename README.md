@@ -1,5 +1,18 @@
 # The Clean Code Bot (Automated Refactorer)
 
+**Repositorio en GitHub:** [github.com/waldopanozo/the-clean-code-bot](https://github.com/waldopanozo/the-clean-code-bot)
+
+Para obtener el código:
+
+```bash
+git clone https://github.com/waldopanozo/the-clean-code-bot.git
+cd the-clean-code-bot
+```
+
+*(Si clonás en otra carpeta, el nombre del directorio será el que elijas; lo importante es ejecutar los comandos del README desde la raíz del proyecto, donde están `requirements.txt` y `clean_code_bot/`.)*
+
+---
+
 CLI en **Python** que toma un archivo de código “sucio” o poco documentado y produce una versión **refactorizada** alineada con **SOLID**, con **documentación técnica** (docstrings estilo Google o NumPy según el modelo).
 
 Incluye:
@@ -7,6 +20,26 @@ Incluye:
 - **Plantillas de prompt** con **Chain of Thought (CoT)**: el modelo primero analiza el código y luego propone mejoras.
 - **Validación y saneamiento** de entrada para mitigar **Prompt Injection** (patrones bloqueados, límites de tamaño, delimitadores seguros).
 - Soporte **Groq** (tier gratuito, API compatible OpenAI) u **OpenAI** (pay-as-you-go).
+
+## Ejemplos y evidencia de uso
+
+En **[`examples/README.md`](examples/README.md)** está:
+
+- la descripción de cada archivo de ejemplo (antes / después / referencia humana);
+- una **tabla de registro de ejecución** (venv, `pip`, `.env`, `--dry-run`, salida con `-o`);
+- los comandos concretos para Windows y Linux/macOS.
+
+Los archivos de muestra viven en la carpeta **`examples/`** (por ejemplo `dirty_calculator.py` → `clean_from_llm.py`).
+
+### Estructura del repositorio
+
+| Ruta | Rol |
+|------|-----|
+| `clean_code_bot/` | Paquete Python: CLI (`cli.py`), LLM (`llm_client.py`), refactor (`refactorer.py`), prompts CoT (`prompt_templates.py`), saneamiento (`sanitizer.py`). |
+| `clean_code_bot/__main__.py` | Permite `python -m clean_code_bot`. |
+| `examples/` | Muestras antes/después y [`examples/README.md`](examples/README.md). |
+| `requirements.txt` | Dependencias (`click`, `openai`, `python-dotenv`). |
+| `.env.example` | Plantilla de variables; copiar a `.env` (no versionar claves). |
 
 ## Requisitos
 
@@ -46,25 +79,29 @@ Hasta que no actives el venv, `pip` y `python` pueden apuntar al sistema. Despu�
 
 **Windows — PowerShell:**
 
+Andá a la carpeta del clon (donde está `requirements.txt`). Ejemplo: si el repo está en `D:\Assure\MOODLE\clean-code-bot`:
+
 ```powershell
-Set-Location ruta\a\clean-code-bot
+Set-Location D:\Assure\MOODLE\clean-code-bot
 .\.venv\Scripts\Activate.ps1
 ```
 
-Si PowerShell bloquea scripts, ejecutá una vez (como administrador o en tu usuario):  
+Si tu copia está en otra ruta, sustituí solo esa parte. Si PowerShell bloquea scripts, ejecutá una vez en tu usuario:  
 `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 **Windows — CMD:**
 
 ```cmd
-cd ruta\a\clean-code-bot
+cd /d D:\Assure\MOODLE\clean-code-bot
 .venv\Scripts\activate.bat
 ```
+
+(Ajustá la ruta tras `cd /d` a la carpeta real del proyecto.)
 
 **Linux o macOS (bash/zsh):**
 
 ```bash
-cd ruta/a/clean-code-bot
+cd ~/ruta/donde/clonaste/clean-code-bot
 source .venv/bin/activate
 ```
 
@@ -142,18 +179,34 @@ Abrí `.env` en VS Code, Cursor, Notepad, etc., y completá al menos **una** de 
 
 Con el entorno virtual activado y estando en `clean-code-bot/`:
 
+**Linux / macOS:**
+
 ```bash
 python -m clean_code_bot refactor examples/dirty_calculator.py --dry-run
 ```
 
-Si la clave y el proveedor son correctos, deberías ver la respuesta larga del modelo (análisis CoT + código). Sin `.env` o con clave inválida, verás un error claro en consola.
+**Windows (PowerShell):**
+
+```powershell
+python -m clean_code_bot refactor examples\dirty_calculator.py --dry-run
+```
+
+Si la clave y el proveedor son correctos, deberías ver la respuesta larga del modelo (análisis CoT + código). Sin `.env` o con clave inválida, verás un error claro en consola. Más detalle en [`examples/README.md`](examples/README.md).
 
 ## Uso
 
-Activá antes el **venv** (apartado *Instalación: entorno virtual* más arriba) y ubicáte en `clean-code-bot/`:
+Activá antes el **venv** (apartado *Instalación: entorno virtual* más arriba) y ubicáte en la raíz de **`clean-code-bot/`** (donde está `requirements.txt` y el `.env`).
+
+**Linux / macOS:**
 
 ```bash
-python -m clean_code_bot refactor path/al/archivo_sucio.py -o salida.py
+python -m clean_code_bot refactor ruta/al/archivo_sucio.py -o salida.py
+```
+
+**Windows (PowerShell):**
+
+```powershell
+python -m clean_code_bot refactor ruta\al\archivo_sucio.py -o salida.py
 ```
 
 Opciones útiles:
@@ -165,17 +218,23 @@ Opciones útiles:
 | `--model` | Modelo concreto (sobreescribe env) |
 | `--dry-run` | Imprime la respuesta completa del modelo (CoT + código) sin extraer solo el bloque cercado |
 
-Ejemplo:
+**Ejemplo con los archivos del repo** (mismos comandos ampliados en [`examples/README.md`](examples/README.md)):
 
 ```bash
-python -m clean_code_bot refactor examples/dirty_calculator.py -o examples/clean_calculator_generated.py
+python -m clean_code_bot refactor examples/dirty_calculator.py -o examples/clean_from_llm.py
+```
+
+```powershell
+python -m clean_code_bot refactor examples\dirty_calculator.py -o examples\clean_from_llm.py
 ```
 
 ## Entrega del curso (checklist)
 
-- [x] Repositorio con el paquete fuente (`clean_code_bot/`)
+- [x] Repositorio público: [waldopanozo/the-clean-code-bot](https://github.com/waldopanozo/the-clean-code-bot)
+- [x] Código fuente del paquete (`clean_code_bot/`)
 - [x] `requirements.txt`
-- [x] Carpeta `examples/` con muestras antes / después
+- [x] Carpeta `examples/` con muestras antes / después (`dirty_calculator.py`, `clean_from_llm.py`, `clean_calculator_reference.py`)
+- [x] Documentación de ejemplos y registro de ejecución en [`examples/README.md`](examples/README.md)
 
 ## Seguridad (Prompt Injection)
 
