@@ -1,0 +1,4 @@
+# Python 3.10+
+click>=8.1.7
+openai>=1.54.0
+python-dotenv>=1.0.1

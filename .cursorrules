@@ -1,0 +1,17 @@
+# The Clean Code Bot — reglas del proyecto
+
+## Objetivo
+- CLI Python que refactoriza archivos de código con ayuda de LLM (Groq u OpenAI).
+- **Chain of Thought** obligatorio en la plantilla de sistema (`prompt_templates.py`).
+- **Saneamiento** de entrada en `sanitizer.py` (tamaño, extensiones, patrones de inyección).
+
+## Estilo de código
+- Python 3.10+, tipado en APIs públicas, `from __future__ import annotations` donde aporte.
+- Errores claros para el usuario del CLI (mensajes en español OK).
+
+## Seguridad
+- Nunca confundir código del usuario con instrucciones del sistema: usar delimitadores (`<user_source>`) y bloqueo heurístico.
+- No commitear `.env` ni claves API.
+
+## Entrega académica
+- `requirements.txt`, carpeta `examples/`, README con uso y riesgos.
